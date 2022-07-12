@@ -1,8 +1,10 @@
-const http = require('http')
+const http = require("http")
+const fs = require("fs")
 
 const server = http.createServer((req, res) => {
     // we are storing the url from the request in a variable
     const url = req.url
+    const method = req.method
 
     if(url === "/") {
         res.write(`
@@ -19,6 +21,17 @@ const server = http.createServer((req, res) => {
             </html>
         `)
         // Here we are returning res.end because we don't want the res below if to be sent.
+        return res.end()
+    }
+
+    if (url === "/message" && method === "POST") {
+        fs.writeFileSync("message.txt", "DUMMY")
+
+        // This will do the same thing as statusCode + setHeader Location combined
+        // res.writeHead(302, {Location: "/"})
+
+        res.statusCode = 302
+        res.setHeader("Location", "/")
         return res.end()
     }
 
