@@ -12,7 +12,7 @@ const server = http.createServer((req, res) => {
                 <head>
                     <title>Enter Message</title>
                     <body>
-                        <form action ="/message" method="POST">
+                        <form action="/message" method="POST">
                             <input type="text" name="message">
                             <button type="Submit">Send</button>
                         </form>
@@ -25,14 +25,26 @@ const server = http.createServer((req, res) => {
     }
 
     if (url === "/message" && method === "POST") {
-        fs.writeFileSync("message.txt", "DUMMY")
+        const body = []
+        req.on("data", (chunk) => {
+          body.push(chunk)
+        })
+
+        return req.on("end", () => {
+            const parsedBody = Buffer.concat(body).toString()
+            //here we'll have the key value pair where key is "message" (because name="message" in input)
+            //value will be whatever we input. So it will contain "message=value" 
+
+            const message = parsedBody.split("=")[1]
+            fs.writeFile("message.txt", message, err => {
+                res.statusCode = 302
+                res.setHeader("Location", "/")
+                return res.end()
+            })
+        })
 
         // This will do the same thing as statusCode + setHeader Location combined
-        // res.writeHead(302, {Location: "/"})
-
-        res.statusCode = 302
-        res.setHeader("Location", "/")
-        return res.end()
+        // res.writeHead(302, {Location: "/"}
     }
 
     res.setHeader("Content-Type", "text/html")
