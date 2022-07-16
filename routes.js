@@ -1,7 +1,6 @@
 const fs = require("fs")
 
 const requestHandler = (req, res) => {
-    // we are storing the url from the request in a variable
     const url = req.url
     const method = req.method
 
@@ -19,7 +18,6 @@ const requestHandler = (req, res) => {
                 </head>
             </html>
         `)
-        // Here we are returning res.end because we don't want the res below if to be sent.
         return res.end()
     }
 
@@ -31,8 +29,6 @@ const requestHandler = (req, res) => {
 
         return req.on("end", () => {
             const parsedBody = Buffer.concat(body).toString()
-            //here we'll have the key value pair where key is "message" (because name="message" in input)
-            //value will be whatever we input. So it will contain "message=value" 
 
             const message = parsedBody.split("=")[1]
             fs.writeFile("message.txt", message, err => {
@@ -41,9 +37,6 @@ const requestHandler = (req, res) => {
                 return res.end()
             })
         })
-
-        // This will do the same thing as statusCode + setHeader Location combined
-        // res.writeHead(302, {Location: "/"}
     }
 
     res.setHeader("Content-Type", "text/html")
