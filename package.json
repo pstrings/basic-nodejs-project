@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/pstrings/basic-nodejs-project/issues"
   },
-  "homepage": "https://github.com/pstrings/basic-nodejs-project#readme"
+  "homepage": "https://github.com/pstrings/basic-nodejs-project#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
 }
